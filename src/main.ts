@@ -54,7 +54,6 @@ class App {
     inputCheck.addEventListener("click", (event) => {
       const todoTarget = (event.target as Element).parentElement.parentElement;
       const showLeft = document.querySelector(".ListItemsLeft");
-      const clearCompleted = document.querySelector(".ClearCompleted");
       if (showLeft.classList.contains("active")) {
         todoTarget.classList.add("hidden");
       }
@@ -107,18 +106,25 @@ class App {
       }
     });
     const clearCompleted = document.querySelector(".ClearCompleted");
-    if (
-      this.findTodoLeft().length < this.listTodos.length &&
-      this.isFilterAll()
-    ) {
-      clearCompleted.setAttribute("style", "opacity: 1");
-      clearCompleted.classList.remove("hidden");
+
+    if (this.isFilterAll()) {
+      if (this.findTodoLeft().length < this.listTodos.length) {
+        clearCompleted.setAttribute("style", "opacity: 1");
+        clearCompleted.classList.remove("hidden");
+      } else {
+        clearCompleted.setAttribute("style", "opacity: 0.5");
+        clearCompleted.classList.add("hidden");
+      }
     } else {
       clearCompleted.setAttribute("style", "opacity: 0.5");
       clearCompleted.classList.add("hidden");
     }
     const showAll = document.querySelector(".ListItems");
     showAll.addEventListener("click", (event) => {
+      if (this.findTodoLeft().length < this.listTodos.length) {
+        clearCompleted.setAttribute("style", "opacity: 1");
+        clearCompleted.classList.remove("hidden");
+      }
       event.preventDefault();
       let listElement = document.querySelectorAll(".todo-list li");
       listElement.forEach((element) => {
@@ -128,6 +134,7 @@ class App {
       showLeft.classList.remove("active");
       showCompleted.classList.remove("active");
     });
+
     const showLeft = document.querySelector(".ListItemsLeft");
     showLeft.addEventListener("click", (event) => {
       event.preventDefault();
